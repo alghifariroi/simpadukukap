@@ -40,20 +40,82 @@
       mozallowfullscreen="true"
       allow="fullscreen; camera; microphone; display-capture; geolocation;">
     </iframe>
+    
+  <!-- GALERI -->
+    <iframe
+      id="galleryFrame"
+      src=""
+      allowfullscreen>
+    </iframe>
+
   </div>
+
   <script>
-    const iframe = document.getElementById('app');
-    
-    window.addEventListener('message', function(e) {
-      if (e.data === 'galeri') {
-        history.pushState({galeri: true}, '');
-        iframe.src = 'https://alghifariroi.github.io/pitulasan/galeri.html';
+
+    const app = document.getElementById("app");
+    const gallery = document.getElementById("galleryFrame");
+
+    const GALERI_URL =
+      "https://alghifariroi.github.io/pitulasan/galeri.html";
+
+    // Kondisi awal = SIMPADU
+    history.replaceState(
+      { halaman: "simpadu" },
+      "",
+      window.location.href
+    );
+
+
+    // ==============================
+    // TERIMA PERINTAH DARI SIMPADU
+    // ==============================
+
+    window.addEventListener("message", function(event) {
+
+      if (event.data === "OPEN_GALLERY") {
+
+        // Load galeri pertama kali
+        if (!gallery.src || gallery.src === window.location.href) {
+          gallery.src = GALERI_URL;
+        }
+
+        // Simpan history GALERI
+        history.pushState(
+          { halaman: "galeri" },
+          "",
+          window.location.href
+        );
+
+        // Tampilkan GALERI
+        app.style.display = "none";
+        gallery.style.display = "block";
       }
+
     });
-    
-    window.addEventListener('popstate', function() {
-      iframe.src = 'https://script.google.com/macros/s/AKfycbzKMu2wEaL5NTtLl0ly8TToMnF7kUMiUbIUQ9PV_KzbFTL9q_yOjP_xZ6pADQB8O_DM/exec';
+
+
+    // ==============================
+    // TOMBOL BACK / FORWARD BROWSER
+    // ==============================
+
+    window.addEventListener("popstate", function(event) {
+
+      if (event.state && event.state.halaman === "galeri") {
+
+        // Kembali ke GALERI
+        app.style.display = "none";
+        gallery.style.display = "block";
+
+      } else {
+
+        // Kembali ke SIMPADU
+        gallery.style.display = "none";
+        app.style.display = "block";
+
+      }
+
     });
+
   </script>
 </body>
 </html>
