@@ -42,58 +42,18 @@
     </iframe>
   </div>
   <script>
-    const appFrame = document.getElementById('app');
+    const iframe = document.getElementById('app');
     
-    const SIMPADU_URL =
-      'https://script.google.com/macros/s/AKfycbzKMu2wEaL5NTtLl0ly8TToMnF7kUMiUbIUQ9PV_KzbFTL9q_yOjP_xZ6pADQB8O_DM/exec';
-    
-    const GALERI_URL =
-      'https://alghifariroi.github.io/pitulasan/galeri.html';
-    
-    
-    // State awal
-    if (!history.state) {
-      history.replaceState(
-        { page: 'simpadu' },
-        '',
-        window.location.href
-      );
-    }
-    
-    
-    // Menerima perintah dari iframe
-    window.addEventListener('message', function(event) {
-    
-      if (!event.data) return;
-    
-      if (event.data.type === 'OPEN_GALERI') {
-    
-        history.pushState(
-          { page: 'galeri' },
-          '',
-          window.location.href
-        );
-    
-        appFrame.src = GALERI_URL;
+    window.addEventListener('message', function(e) {
+      if (e.data === 'galeri') {
+        history.pushState({galeri: true}, '');
+        iframe.src = 'https://alghifariroi.github.io/pitulasan/galeri.html';
       }
-    
     });
     
-    
-    // Tombol Back / Forward browser
-    window.addEventListener('popstate', function(event) {
-    
-      if (event.state && event.state.page === 'galeri') {
-    
-        appFrame.src = GALERI_URL;
-    
-      } else {
-    
-        appFrame.src = SIMPADU_URL;
-    
-      }
-    
+    window.addEventListener('popstate', function() {
+      iframe.src = 'https://script.google.com/macros/s/AKfycbzKMu2wEaL5NTtLl0ly8TToMnF7kUMiUbIUQ9PV_KzbFTL9q_yOjP_xZ6pADQB8O_DM/exec';
     });
-    </script>
+  </script>
 </body>
 </html>
