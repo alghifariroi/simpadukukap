@@ -41,5 +41,83 @@
       allow="fullscreen; camera; microphone; display-capture; geolocation;">
     </iframe>
   </div>
+  <script>
+    const appFrame = document.getElementById('app');
+
+    const SIMPADU_URL =
+      'https://script.google.com/macros/s/AKfycbzKMu2wEaL5NTtLl0ly8TToMnF7kUMiUbIUQ9PV_KzbFTL9q_yOjP_xZ6pADQB8O_DM/exec';
+
+    const GALERI_URL =
+      'https://alghifariroi.github.io/pitulasan/galeri.html';
+
+
+    /*
+     * =========================================================
+     * 1. TERIMA PERINTAH DARI APLIKASI GOOGLE APPS SCRIPT
+     * =========================================================
+     */
+
+    window.addEventListener('message', function(event) {
+
+      // Hanya menerima perintah yang kita kenal
+      if (!event.data || typeof event.data !== 'object') {
+        return;
+      }
+
+      if (event.data.type === 'OPEN_GALERI') {
+
+        // Masukkan Galeri ke browser history
+        history.pushState(
+          {
+            page: 'galeri'
+          },
+          '',
+          window.location.href
+        );
+
+        // Ganti isi iframe
+        appFrame.src = GALERI_URL;
+      }
+
+    });
+
+
+    /*
+     * =========================================================
+     * 2. KETIKA TOMBOL BACK BROWSER DITEKAN
+     * =========================================================
+     */
+
+    window.addEventListener('popstate', function(event) {
+
+      // Kembali ke SIMPADU
+      appFrame.src = SIMPADU_URL;
+
+    });
+
+
+    /*
+     * =========================================================
+     * 3. HANDLE INITIAL LOAD
+     * =========================================================
+     */
+
+    window.addEventListener('load', function() {
+
+      // Pastikan state awal adalah SIMPADU
+      if (!history.state) {
+
+        history.replaceState(
+          {
+            page: 'simpadu'
+          },
+          '',
+          window.location.href
+        );
+
+      }
+
+    });
+  </script>
 </body>
 </html>
